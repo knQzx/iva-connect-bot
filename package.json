@@ -1,0 +1,17 @@
+{
+  "name": "iva-connect-bot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Telegram bot for automating IVA Connect (iva360.ru) video conferences",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/bot.js",
+    "bot": "node src/bot.js",
+    "install-browser": "npx playwright install chromium"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "playwright": "^1.50.0",
+    "telegraf": "^4.16.3"
+  }
+}

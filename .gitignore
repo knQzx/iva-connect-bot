@@ -1,0 +1,13 @@
+node_modules/
+.env
+.claude/
+screenshots/
+videos/
+fake-camera.y4m
+fake-mic.wav
+*.mov
+*.MOV
+*.mp4
+*.y4m
+*.png
+*.jpg
