@@ -23,7 +23,7 @@ Telegram-бот для автоматизации видеоконференци
 ## Установка
 
 ```bash
-git clone https://github.com/<your-username>/iva-connect-bot.git
+git clone https://github.com/knQzx/iva-connect-bot.git
 cd iva-connect-bot
 npm install
 npx playwright install chromium
