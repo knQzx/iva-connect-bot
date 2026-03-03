@@ -4,7 +4,7 @@ const fs = require("fs");
 require("dotenv").config();
 
 const MEETING_URL = process.env.MEETING_URL
-  || "https://meet.iva360.ru/v2/join?token=t0ec92be2-28e3-45d3-a989-fad9527df471";
+  || "https://meet.iva360.ru/v2/join?token=test";
 const DISPLAY_NAME = process.env.DISPLAY_NAME || "Студент";
 const DIR = path.join(__dirname, "screenshots");
 fs.mkdirSync(DIR, { recursive: true });
