@@ -1,4 +1,4 @@
-const { execSync, execFileSync } = require("child_process");
+const { execFileSync } = require("child_process");
 const path = require("path");
 const fs = require("fs");
 
@@ -40,8 +40,9 @@ function generateSilenceWav(filePath) {
 }
 
 function convertToWav(srcPath, dstPath) {
-  execSync(
-    `ffmpeg -y -i "${srcPath}" -ar 48000 -ac 1 "${dstPath}"`,
+  execFileSync(
+    "ffmpeg",
+    ["-y", "-i", srcPath, "-ar", "48000", "-ac", "1", dstPath],
     { stdio: "pipe", timeout: 60000 }
   );
 }
@@ -63,7 +64,12 @@ function prepareFakeCamera() {
   const CAMERA_VIDEO = process.env.CAMERA_VIDEO || "";
   if (!CAMERA_VIDEO) return false;
 
-  const src = path.join(__dirname, "..", CAMERA_VIDEO);
+  const projectRoot = path.resolve(__dirname, "..");
+  const src = path.resolve(projectRoot, CAMERA_VIDEO);
+  if (!src.startsWith(projectRoot + path.sep)) {
+    console.error(`[cam] Путь ${CAMERA_VIDEO} выходит за пределы проекта.`);
+    return false;
+  }
   if (!fs.existsSync(src)) {
     console.error(`[cam] Файл ${src} не найден.`);
     return false;
@@ -78,8 +84,11 @@ function prepareFakeCamera() {
   if (!y4mExists || srcStat.mtimeMs > y4mStat.mtimeMs) {
     console.log(`[cam] Конвертируем ${CAMERA_VIDEO} → fake-camera.y4m ...`);
     try {
-      execSync(
-        `ffmpeg -y -i "${src}" -pix_fmt yuv420p -vf "scale=640:480:force_original_aspect_ratio=decrease,pad=640:480:(ow-iw)/2:(oh-ih)/2" "${FAKE_CAMERA}"`,
+      execFileSync(
+        "ffmpeg",
+        ["-y", "-i", src, "-pix_fmt", "yuv420p", "-vf",
+         "scale=640:480:force_original_aspect_ratio=decrease,pad=640:480:(ow-iw)/2:(oh-ih)/2",
+         FAKE_CAMERA],
         { stdio: "pipe" }
       );
       const size = (fs.statSync(FAKE_CAMERA).size / 1024 / 1024).toFixed(1);
@@ -102,8 +111,11 @@ function prepareFakeCamera() {
 }
 
 function convertToY4m(srcPath, dstPath) {
-  execSync(
-    `ffmpeg -y -i "${srcPath}" -pix_fmt yuv420p -vf "scale=640:480:force_original_aspect_ratio=decrease,pad=640:480:(ow-iw)/2:(oh-ih)/2" "${dstPath}"`,
+  execFileSync(
+    "ffmpeg",
+    ["-y", "-i", srcPath, "-pix_fmt", "yuv420p", "-vf",
+     "scale=640:480:force_original_aspect_ratio=decrease,pad=640:480:(ow-iw)/2:(oh-ih)/2",
+     dstPath],
     { stdio: "pipe", timeout: 120000 }
   );
 }
